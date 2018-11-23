@@ -4,7 +4,10 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -18,46 +21,59 @@ public class BookStore implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue( strategy=GenerationType.AUTO )
 	private Integer bookId;
 	private String bookTitle;
-	private String BookAuthor;
-	private String bookSubject;
+	//private String BookAuthor;
+	@OneToOne
+	@JoinColumn(name = "authorId")
+	private BookAuthor bookAuthor;
 	
+	private String bookSubject;
+
 	public Integer getBookId() {
 		return bookId;
 	}
+
 	public void setBookId(Integer bookId) {
 		this.bookId = bookId;
 	}
+
 	public String getBookTitle() {
 		return bookTitle;
 	}
+
 	public void setBookTitle(String bookTitle) {
 		this.bookTitle = bookTitle;
 	}
-	public String getBookAuthor() {
-		return BookAuthor;
+
+	public BookAuthor getBookAuthor() {
+		return bookAuthor;
 	}
-	public void setBookAuthor(String bookAuthor) {
-		BookAuthor = bookAuthor;
+
+	public void setBookAuthor(BookAuthor bookAuthor) {
+		this.bookAuthor = bookAuthor;
 	}
+
 	public String getBookSubject() {
 		return bookSubject;
 	}
+
 	public void setBookSubject(String bookSubject) {
 		this.bookSubject = bookSubject;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((BookAuthor == null) ? 0 : BookAuthor.hashCode());
+		result = prime * result + ((bookAuthor == null) ? 0 : bookAuthor.hashCode());
 		result = prime * result + ((bookId == null) ? 0 : bookId.hashCode());
 		result = prime * result + ((bookSubject == null) ? 0 : bookSubject.hashCode());
 		result = prime * result + ((bookTitle == null) ? 0 : bookTitle.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -67,10 +83,10 @@ public class BookStore implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		BookStore other = (BookStore) obj;
-		if (BookAuthor == null) {
-			if (other.BookAuthor != null)
+		if (bookAuthor == null) {
+			if (other.bookAuthor != null)
 				return false;
-		} else if (!BookAuthor.equals(other.BookAuthor))
+		} else if (!bookAuthor.equals(other.bookAuthor))
 			return false;
 		if (bookId == null) {
 			if (other.bookId != null)
@@ -89,10 +105,12 @@ public class BookStore implements Serializable {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
-		return "BookStore [bookId=" + bookId + ", bookTtile=" + bookTitle + ", BookAuthor=" + BookAuthor
+		return "BookStore [bookId=" + bookId + ", bookTitle=" + bookTitle + ", bookAuthor=" + bookAuthor
 				+ ", bookSubject=" + bookSubject + "]";
 	}
+	
 	
 }
